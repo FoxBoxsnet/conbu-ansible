@@ -1,0 +1,30 @@
+{
+  "attachments": [
+    {
+      "color": "good",
+      "fields": [
+        {
+          "title": "From:",
+          "value": "${MESSAGE_FROM}",
+          "short": true
+        },
+        {
+          "title": "To:",
+          "value": "${MESSAGE_TO}",
+          "short": true
+        },
+        {
+          "title": "Subject:",
+          "value": "${MESSAGE_SUBJECT}",
+          "short": true
+        }
+      ]
+    },
+    {
+      "title": "Message Body:",
+      "text": "${MESSAGE_BODY}",
+      "footer": "Forward mail to Slack",
+      "ts": "${TIMESTAMP}"
+    }
+  ]
+}

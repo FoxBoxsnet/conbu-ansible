@@ -1,0 +1,8 @@
+---
+  - name: "Set configured port fact"
+    set_fact:
+      configured_port: "{{ ansible_port }}"
+
+  - name: "Update all packages to the latest version"
+    apt:
+      upgrade: dist

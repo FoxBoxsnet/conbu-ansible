@@ -1,0 +1,27 @@
+---
+  - name: "Install rsyslog"
+    apt:
+      package: rsyslog
+      state: present
+      update_cache: yes
+
+  - name: "mkdir /var/log/ufw"
+    file:
+      dest: "/var/log/ufw"
+      owner: "syslog"
+      group: "adm"
+      mode: 0755
+      state: directory
+    when: users
+
+  - name: "Configure rsyslog 20-ufw.conf"
+    template:
+      src: 20-ufw.conf.j2
+      dest: /etc/rsyslog.d/20-ufw.conf
+    notify: "restart rsyslog"
+
+  - name: "Configure logrotate ufw"
+    template:
+      src: ufw.j2
+      dest: /etc/logrotate.d/ufw
+    notify: "restart rsyslog"

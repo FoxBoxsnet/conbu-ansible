@@ -1,0 +1,7 @@
+---
+  firewall_role:
+  - {
+    rule: 'limit',
+    port: 62022,
+    proto: 'tcp'
+  }

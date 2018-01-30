@@ -1,0 +1,92 @@
+---
+  - name: "{{ sshd_port }} changes with port numbers"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^Port"
+      insertafter: "^#Port.*"
+      line: "Port {{ sshd_port }}"
+
+  - name: "Set the Protocol version 2"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^Protocol"
+      insertafter: "^#Protocol.*"
+      line: "Protocol 2"
+
+  - name: "Set the HostKey dsa_key Disabled"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^HostKey /etc/ssh/ssh_host_dsa_key"
+      insertafter: "^#HostKey /etc/ssh/ssh_host_dsa_key"
+      line: "#HostKey /etc/ssh/ssh_host_dsa_ke"
+
+  - name: "Set the AuthorizedKeysFile .ssh/authorized_keys"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^AuthorizedKeysFile.*"
+      insertafter: "^#AuthorizedKeysFile.*"
+      line: "AuthorizedKeysFile  .ssh/authorized_keys"
+
+  - name: "Set the PermitRootLogin on"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^PermitRootLogin.*"
+      insertafter: "^#PermitRootLogin.*"
+      line: "PermitRootLogin no"
+
+  - name: "Set the RSAAuthentication yes"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^RSAAuthentication.*"
+      insertafter: "^#RSAAuthentication.*"
+      line: "RSAAuthentication yes"
+
+  - name: "Set the PubkeyAuthentication yes"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^PubkeyAuthentication.*"
+      insertafter: "^#PubkeyAuthentication.*"
+      line: "PubkeyAuthentication yes"
+
+  - name: "Set the PermitEmptyPasswords no"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^PermitEmptyPasswords.*"
+      insertafter: "^#PermitEmptyPasswords.*"
+      line: "PermitEmptyPasswords no"
+
+  - name: "Set the ChallengeResponseAuthentication no"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^ChallengeResponseAuthentication.*"
+      insertafter: "^#ChallengeResponseAuthentication.*"
+      line: "ChallengeResponseAuthentication no"
+
+  - name: "Set the PasswordAuthentication no"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^PasswordAuthentication.*"
+      insertafter: "^#PasswordAuthentication.*"
+      line: "PasswordAuthentication no"
+
+  - name: "Set the GSSAPIAuthentication yes"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^GSSAPIAuthentication.*"
+      insertafter: "^#GSSAPIAuthentication.*"
+      line: "GSSAPIAuthentication yes"
+
+  - name: "Set the GSSAPICleanupCredentials no"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^GSSAPICleanupCredentials.*"
+      insertafter: "^#GSSAPICleanupCredentials.*"
+      line: "GSSAPICleanupCredentials no"
+
+  - name: "Set the UseDNS"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^UseDNS.*"
+      insertafter: "^#UseDNS.*"
+      line: "UseDNS yes"
+    notify: "restart sshd"

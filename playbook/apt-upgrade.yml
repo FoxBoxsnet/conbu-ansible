@@ -1,0 +1,7 @@
+---
+  - hosts: prd
+    gather_facts: False
+    user: root
+    roles:
+
+      - role: "package/apt/upgrade"

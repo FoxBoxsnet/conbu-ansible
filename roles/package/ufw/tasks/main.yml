@@ -1,0 +1,33 @@
+---
+  - name: "Install ufw"
+    apt:
+      package: ufw
+      state: present
+      update_cache: yes
+
+  - name: "Configure ufw default Incoming deny"
+    ufw:
+      direction: incoming
+      policy: deny
+
+  - name: "Configure ufw default Outgoing allow"
+    ufw:
+      direction: outgoing
+      policy: allow
+
+  - name: "Configure ufw rules"
+    ufw:
+      rule: "{{ item.rule }}"
+      port: "{{ item.port }}"
+      proto: "{{ item.proto }}"
+    with_items:
+      - "{{ firewall_role }}"
+
+  - name: "Enable ufw logging"
+    ufw:
+      logging: medium
+
+  - name: Enable ufw
+    ufw:
+      state: enabled
+    notify: "restart ufw"

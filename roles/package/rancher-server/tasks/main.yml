@@ -1,0 +1,25 @@
+---
+  - name: "copy systemd files"
+    copy:
+      src: systemd/rancher-server.service
+      dest: /etc/systemd/system/rancher-server.service
+      owner: root
+      group: root
+      mode: 0755
+    notify: "restart daemon-reload"
+
+  - name: "mkdir /data"
+    file:
+      dest: "/data/"
+      owner: "root"
+      group: "root"
+      mode: 0755
+      state: directory
+
+  - name: "copy docker-compose.yml"
+    copy:
+      src: docker-compose.yml
+      dest: /data/docker-compose.yml
+      owner: root
+      group: root
+      mode: 0644

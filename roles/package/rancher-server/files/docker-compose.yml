@@ -1,0 +1,66 @@
+version: '2'
+services:
+
+  rancher-server-proxy:
+    image: tokyohomesoc/rancher-server-proxy
+    container_name: rancher-server-proxy
+    restart: always
+    hostname: rancher-server-proxy
+    ports:
+    -  "80:80/tcp"
+    - "443:443/tcp"
+    volumes:
+    - /var/run/docker.sock:/tmp/docker.sock:ro
+    - ./data/nginx/certs:/etc/nginx/certs:ro
+    - ./data/nginx/conf.d:/etc/nginx/conf.d
+    - ./data/nginx/vhost.d:/etc/nginx/vhost.d
+    - ./data/nginx/html:/usr/share/nginx/html
+    logging:
+      driver: 'fluentd'
+      options:
+        fluentd-address: 127.0.0.1:24224
+        tag: docker.{{.Name}}.{{.ID}}
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    restart: always
+    environment:
+      NGINX_PROXY_CONTAINER: rancher-server-proxy
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    - ./data/nginx/certs:/etc/nginx/certs:rw
+    volumes_from:
+    - rancher-server-proxy
+
+  rancher-server:
+    image: rancher/server:v1.6.2
+    container_name: rancher-server
+    restart: always
+    environment:
+      VIRTUAL_PORT: 8080
+      VIRTUAL_HOST: con01.homesoc.tokyo
+      LETSENCRYPT_HOST: con01.homesoc.tokyo
+      LETSENCRYPT_EMAIL: hostmaster@homesoc.tokyo
+    volumes:
+    - ./data/rancher-server/lib/mysql:/var/lib/mysql
+    - ./data/rancher-server/log/mysql:/var/log/mysql
+    - /etc/localtime:/etc/localtime:ro
+    ports:
+    - "127.0.0.1:8080:8080/tcp"
+
+  fluent-forward:
+    image: tokyohomesoc/fluent-forward
+    container_name: fluent-forward
+    hostname: fluent-forward
+    restart: always
+    ports:
+    - "127.0.0.1:24224:24224/tcp"
+    environment:
+      IDCF_ACCESS_KEY: "MWQAWZDKNLF_36NFD9TM"
+      IDCF_SECRET_KEY: "KVG9d73zqOXq3pGyeSOrvhbvwBgJj05x19VlYQ=="
+      IDCF_BUCKET_NAME: "docker.rs.logs.rancher.co.jp"
+      SLACK_FLUENT_WEBHOOK_URL: "https://hooks.slack.com/services/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"
+      SLACK_FLUENT_CHANNEL: "web-mgnt-notice-dev"
+    volumes:
+    - ./data/fluent-forward:/home/fluent

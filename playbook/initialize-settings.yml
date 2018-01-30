@@ -1,0 +1,18 @@
+---
+  - hosts: prd
+    user: root
+    become: yes
+    roles:
+
+    - role: "commons/hostname"
+    - role: "commons/sysctl"
+    - role: "commons/init-package"
+    - role: "commons/useradd"
+
+    - role: "package/apt/upgrade"
+    - role: "package/docker"
+    - role: "package/docker-compose"
+    - role: "package/ntp"
+    - role: "package/rsyslog"
+    - role: "package/sshd"
+    - role: "package/ufw"

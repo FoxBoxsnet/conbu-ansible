@@ -1,0 +1,9 @@
+---
+  - hosts: prd
+    user: ansible
+    become: yes
+    roles:
+
+    - role: "commons/init-package"
+    - role: "commons/hostname"
+    - role: "commons/useradd"

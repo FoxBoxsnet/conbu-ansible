@@ -1,0 +1,8 @@
+# Log kernel generated UFW log messages to file
+:msg,contains,"[UFW BLOCK] IN=eth0" -/var/log/ufw/ufw-block.log
+:msg,contains,"[UFW BLOCK] IN=eth0" @@127.0.0.1:514
+:msg,contains,"[UFW " ~
+# Uncomment the following to stop logging anything that matches the last rule.
+# Doing this will stop logging kernel generated UFW log messages to the file
+# normally containing kern.* messages (eg, /var/log/kern.log)
+#& stop

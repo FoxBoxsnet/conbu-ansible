@@ -1,0 +1,15 @@
+---
+  users:
+    - {
+        name: 'aoyama',
+        github: 'FoxBoxsnet',
+        shell: '/bin/zsh',
+        uid: 1002
+      }
+
+    - {
+        name: 'yano',
+        github: 'ynott',
+        shell: '/bin/zsh',
+        uid: 1003
+      }

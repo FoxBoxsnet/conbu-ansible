@@ -1,0 +1,7 @@
+---
+  - hosts: rancher-server
+    user: ansible
+    become: yes
+    roles:
+
+    - role: "package/rancher-server"

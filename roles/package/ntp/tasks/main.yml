@@ -1,0 +1,22 @@
+---
+  - name: "Install NTP"
+    apt:
+      package: ntp
+      state: present
+      update_cache: yes
+
+  - name: "Set timezone variables"
+    timezone:
+      name: "{{ timezone }}"
+
+  - name: "Configure NTP"
+    template:
+      src: ntp.conf.j2
+      dest: /etc/ntp.conf
+    notify: "restart ntp"
+
+  - name: Ensure NTP is running and enabled as configured.
+    service:
+      name: ntp
+      state: started
+      enabled: yes
